@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@import "@fontsource-variable/dancing-script";
+   @source "../index.html";
+   @source "../confession.html";
+   @source "../pages";
+   @source "../js";
+@theme {
+  --font-script: "Dancing Script Variable", cursive;
+}

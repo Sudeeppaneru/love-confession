@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confession Website</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="bg-[url('../assets/pink-gradient.png')] relative min-h-screen overflow-clip" >
+    <div class="w-full min-h-screen my-auto overflow-clip flex items-center justify-around">
+        <div class="relative  overflow-hidden m-auto h-fit w-fit ">
+            <form action="post" id="confession-form" class="flex flex-col gap-2">
+                <label for="receiver" class="text-md text-pink-700 font-semibold font-script">Receiver's Name</label>
+                <input id="receiver" name="receiver_name" type="text" maxlength="60" autocomplete="off" class="border-0 border-b-2 border-pink-400 bg-transparent outline-hidden focus:border-pink-500 text-md text-pink-700 font-semibold font-script" required>
+                <br>
+                <label for="sender" class="text-md text-pink-700 font-semibold font-script">Sender's Name</label>
+                <input id="sender" name="sender_name" type="text" maxlength="60" autocomplete="off" class="border-0 border-b-2 border-pink-400 bg-transparent outline-hidden focus:border-pink-500 text-md text-pink-700 font-semibold font-script" required>
+                <br>
+                <label for="message" class="text-md text-pink-700 font-semibold font-script">Message</label>
+                <textarea id="message" name="message" rows="1" maxlength="600" class="resize-none overflow-hidden border-0 border-b-2 border-pink-400 bg-transparent outline-hidden focus:border-pink-500 text-md text-pink-700 font-semibold font-script" required></textarea>
+                <button type="submit" class="rounded-2xl text-white bg-pink-500 px-4 py-4 mt-5">Generate Link</button>
+                <p id="form-error" class="text-sm text-red-700" role="alert"></p>
+            </form>
+
+            <section id="result" hidden class="mt-6 flex flex-col gap-2">
+                <label for="share-url" class="text-md text-pink-700 font-semibold font-script">Your link</label>
+                <input id="share-url" type="text" readonly class="w-full rounded-lg border-2 border-pink-300 bg-white/60 p-2 text-sm text-pink-900">
+                <button id="copy" type="button" class="rounded-2xl border-2 border-pink-500 px-4 py-3 text-pink-700 font-semibold">Copy link</button>
+                <p id="copy-status" class="text-sm text-pink-800" aria-live="polite"></p>
+            </section>
+        </div>
+    </div>
+
+
+<svg class="size-32 -rotate-12 absolute top-4 left-2 pointer-events-none" aria-hidden="true"><use href="#heart"/></svg>
+<svg class="size-32 rotate-12 absolute bottom-0 right-2 pointer-events-none" aria-hidden="true"><use href="#heart"/></svg>
+
+
+<svg width="0" height="0" class="absolute" aria-hidden="true">
+  <defs>
+    <radialGradient id="hf" cx="35%" cy="28%" r="80%">
+      <stop offset="0" stop-color="#ffe0ec"/>
+      <stop offset="0.3" stop-color="#ff7fb0"/>
+      <stop offset="0.72" stop-color="#ee3070"/>
+      <stop offset="1" stop-color="#b3144c"/>
+    </radialGradient>
+    <linearGradient id="hs" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d11d62"/>
+      <stop offset="1" stop-color="#8a0e3a"/>
+    </linearGradient>
+    <symbol id="heart" viewBox="-118 -108 236 210">
+      <path id="hp" d="M0,-62 C-8,-85 -30,-98 -55,-98 C-88,-98 -108,-72 -108,-42 C-108,-5 -70,28 -35,55 C-20,66 -12,72 0,72 C12,72 20,66 35,55 C70,28 108,-5 108,-42 C108,-72 88,-98 55,-98 C30,-98 8,-85 0,-62 Z"
+            transform="translate(0 13)" fill="url(#hs)" stroke="url(#hs)" stroke-width="6" stroke-linejoin="round"/>
+      <path d="M0,-62 C-8,-85 -30,-98 -55,-98 C-88,-98 -108,-72 -108,-42 C-108,-5 -70,28 -35,55 C-20,66 -12,72 0,72 C12,72 20,66 35,55 C70,28 108,-5 108,-42 C108,-72 88,-98 55,-98 C30,-98 8,-85 0,-62 Z"
+            fill="url(#hf)" stroke="url(#hf)" stroke-width="6" stroke-linejoin="round"/>
+      <ellipse cx="-66" cy="-62" rx="26" ry="14" transform="rotate(-35 -66 -62)" fill="#fff" fill-opacity="0.6"/>
+      <circle cx="-34" cy="-82" r="5" fill="#fff" fill-opacity="0.7"/>
+      <path d="M72,12 C88,-6 96,-26 94,-46" fill="none" stroke="#fff" stroke-opacity="0.35" stroke-width="6" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<script type="module" src="./js/generator.js"></script>
+</body>
+</html>

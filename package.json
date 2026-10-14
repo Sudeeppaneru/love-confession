@@ -1,0 +1,18 @@
+{
+  "name": "love-confession",
+  "version": "1.0.0",
+  "description": "A love confession website",
+  "license": "ISC",
+  "author": "Sudip Paneru",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx @tailwindcss/cli -i ./css/input.css -o ./css/style.css --watch"
+  },
+  "dependencies": {
+    "@fontsource-variable/dancing-script": "^5.3.0",
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}

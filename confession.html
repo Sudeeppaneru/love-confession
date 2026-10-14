@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A message for you</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="relative flex min-h-screen items-center justify-center overflow-hidden bg-linear-to-br from-pink-100 via-pink-200 to-pink-300 p-6 text-rose-950">
+
+  <svg class="pointer-events-none absolute top-6 left-4 size-24 -rotate-12 sm:top-12 sm:left-16 sm:size-40" aria-hidden="true"><use href="#heart"/></svg>
+  <svg class="pointer-events-none absolute right-4 bottom-6 size-24 rotate-12 sm:right-16 sm:bottom-12 sm:size-40" aria-hidden="true"><use href="#heart"/></svg>
+
+  <main id="ask" hidden class="relative z-10 mx-auto w-full max-w-xl text-center">
+    <h1 id="to" class="font-script text-5xl font-bold text-pink-700 sm:text-6xl"></h1>
+    <p id="message" class="mt-6 text-lg leading-relaxed break-words whitespace-pre-line sm:text-xl"></p>
+    <p id="from" class="font-script mt-4 text-3xl text-pink-800"></p>
+    <p id="question" class="mt-10 text-xl font-bold"></p>
+    <div class="mt-6 flex items-center justify-center gap-6">
+      <button id="yes" type="button"
+        class="rounded-full bg-pink-600 px-10 py-3 text-lg font-bold text-white transition-colors hover:bg-pink-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pink-800">
+        Yes
+      </button>
+      <button id="no" type="button"
+        class="rounded-full border-2 border-pink-600 px-10 py-3 text-lg font-bold text-pink-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pink-800">
+        No
+      </button>
+    </div>
+    <p id="nudge" class="mt-6 min-h-7 text-pink-800" aria-live="polite"></p>
+  </main>
+
+  <section id="done" hidden class="relative z-10 mx-auto max-w-xl text-center">
+    <h2 id="done-title" tabindex="-1" class="font-script text-6xl font-bold text-pink-700 outline-none sm:text-7xl">Yay!</h2>
+    <p id="done-text" class="mt-6 text-xl leading-relaxed"></p>
+  </section>
+
+
+  <svg width="0" height="0" class="absolute" aria-hidden="true">
+    <defs>
+      <radialGradient id="hf" cx="35%" cy="28%" r="80%">
+        <stop offset="0" stop-color="#ffe0ec"/>
+        <stop offset="0.3" stop-color="#ff7fb0"/>
+        <stop offset="0.72" stop-color="#ee3070"/>
+        <stop offset="1" stop-color="#b3144c"/>
+      </radialGradient>
+      <linearGradient id="hs" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#d11d62"/>
+        <stop offset="1" stop-color="#8a0e3a"/>
+      </linearGradient>
+      <symbol id="heart" viewBox="-118 -108 236 210">
+        <path d="M0,-62 C-8,-85 -30,-98 -55,-98 C-88,-98 -108,-72 -108,-42 C-108,-5 -70,28 -35,55 C-20,66 -12,72 0,72 C12,72 20,66 35,55 C70,28 108,-5 108,-42 C108,-72 88,-98 55,-98 C30,-98 8,-85 0,-62 Z"
+              transform="translate(0 13)" fill="url(#hs)" stroke="url(#hs)" stroke-width="6" stroke-linejoin="round"/>
+        <path d="M0,-62 C-8,-85 -30,-98 -55,-98 C-88,-98 -108,-72 -108,-42 C-108,-5 -70,28 -35,55 C-20,66 -12,72 0,72 C12,72 20,66 35,55 C70,28 108,-5 108,-42 C108,-72 88,-98 55,-98 C30,-98 8,-85 0,-62 Z"
+              fill="url(#hf)" stroke="url(#hf)" stroke-width="6" stroke-linejoin="round"/>
+        <ellipse cx="-66" cy="-62" rx="26" ry="14" transform="rotate(-35 -66 -62)" fill="#fff" fill-opacity="0.6"/>
+        <circle cx="-34" cy="-82" r="5" fill="#fff" fill-opacity="0.7"/>
+        <path d="M72,12 C88,-6 96,-26 94,-46" fill="none" stroke="#fff" stroke-opacity="0.35" stroke-width="6" stroke-linecap="round"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <script type="module">
+    import { decrypt } from "./js/crypter.js";
+    const $ = (id) => document.getElementById(id);
+
+    function decode(param) {
+      let s = param.replace(/ /g, "+").replace(/-/g, "+").replace(/_/g, "/");
+      while (s.length % 4) s += "=";
+      const bytes = Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+      return JSON.parse(new TextDecoder().decode(bytes));
+    }
+
+    async function readConfession() {
+      try {
+        const raw = new URLSearchParams(location.search).get("data");
+        const key = new URLSearchParams(location.hash.slice(1)).get("k");
+        if (!raw) return null;
+        const d = key ? JSON.parse(await decrypt(raw, key)) : decode(raw);
+        const str = (v, max) => (typeof v === "string" ? v.trim().slice(0, max) : "");
+        const c = {
+          receiver: str(d.receiver_name, 60),
+          sender: str(d.sender_name, 60),
+          message: str(d.message, 600),
+          question: str(d.question, 100) || "Do you feel the same way?",
+        };
+        return c.receiver && c.message ? c : null;
+      } catch {
+        return null;
+      }
+    }
+
+    const c = await readConfession();
+    if (!c) {
+      location.replace("./pages/404.html");
+    } else {
+      $("to").textContent = c.receiver;
+      $("message").textContent = c.message;
+      $("from").textContent = c.sender ? "- " + c.sender : "";
+      $("question").textContent = c.question;
+      document.title = "A message for " + c.receiver;
+      $("ask").hidden = false;
+      setupButtons();
+    }
+
+    function setupButtons() {
+      const yes = $("yes");
+      const no = $("no");
+      const nudges = [
+        "Are you sure?",
+        "Try again.",
+        "That button seems broken.",
+        "The other button is right there.",
+        "Still no?",
+      ];
+      let dodges = 0;
+
+      function overlaps(a, b) {
+        const m = 24;
+        return !(a.right + m < b.left || a.left - m > b.right || a.bottom + m < b.top || a.top - m > b.bottom);
+      }
+
+      function dodge(e) {
+        if (e && e.type === "click") e.preventDefault();
+        const r = no.getBoundingClientRect();
+        const pad = 16;
+        const maxX = window.innerWidth - r.width - pad;
+        const maxY = window.innerHeight - r.height - pad;
+        const yesRect = yes.getBoundingClientRect();
+        let x, y, box;
+        for (let i = 0; i < 20; i++) {
+          x = pad + Math.random() * Math.max(0, maxX - pad);
+          y = pad + Math.random() * Math.max(0, maxY - pad);
+          box = { left: x, top: y, right: x + r.width, bottom: y + r.height };
+          if (!overlaps(box, yesRect)) break;
+        }
+        no.style.position = "fixed";
+        no.style.left = x + "px";
+        no.style.top = y + "px";
+        no.style.zIndex = "20";
+        $("nudge").textContent = nudges[dodges % nudges.length];
+        dodges++;
+      }
+
+      no.addEventListener("pointerenter", dodge);
+      no.addEventListener("click", dodge);
+
+      yes.addEventListener("click", () => {
+        $("ask").hidden = true;
+        no.hidden = true;
+        $("done-text").textContent = c.sender ? "Now go tell " + c.sender + "." : "You said yes.";
+        $("done").hidden = false;
+        $("done-title").focus();
+        floatHearts();
+      });
+    }
+
+    function floatHearts() {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      for (let i = 0; i < 14; i++) {
+        const NS = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(NS, "svg");
+        const use = document.createElementNS(NS, "use");
+        use.setAttribute("href", "#heart");
+        svg.appendChild(use);
+        const size = 32 + Math.random() * 40;
+        svg.setAttribute("width", size);
+        svg.setAttribute("height", size);
+        svg.setAttribute("aria-hidden", "true");
+        svg.style.cssText = "position:fixed;pointer-events:none;z-index:30;bottom:-80px;left:" + Math.random() * 95 + "vw";
+        document.body.appendChild(svg);
+        const rise = window.innerHeight + 160;
+        const sway = (Math.random() - 0.5) * 120;
+        const anim = svg.animate(
+          [
+            { transform: "translate(0,0)", opacity: 1 },
+            { transform: "translate(" + sway + "px,-" + rise + "px)", opacity: 0 },
+          ],
+          { duration: 3000 + Math.random() * 2500, delay: Math.random() * 1200, easing: "ease-out", fill: "forwards" }
+        );
+        anim.onfinish = () => svg.remove();
+      }
+    }
+  </script>
+</body>
+</html>

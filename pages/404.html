@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page not found</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="relative flex min-h-screen items-center justify-center overflow-hidden bg-linear-to-br from-pink-100 via-pink-200 to-pink-300 p-6 text-rose-950">
+
+  <svg class="pointer-events-none absolute top-6 left-4 size-28 -rotate-12 sm:top-12 sm:left-16 sm:size-44" aria-hidden="true"><use href="#heart"/></svg>
+  <svg class="pointer-events-none absolute right-4 bottom-6 size-28 rotate-12 sm:right-16 sm:bottom-12 sm:size-44" aria-hidden="true"><use href="#heart"/></svg>
+
+  <main class="relative z-10 mx-auto max-w-md text-center">
+    <h1 class="font-script text-6xl font-bold text-pink-700 sm:text-7xl">Page not found</h1>
+    <p class="mt-6 text-lg leading-relaxed">
+      This link doesn't lead to a confession. It may be incomplete or copied wrong.
+    </p>
+    <p class="mt-2 text-lg leading-relaxed">
+      Ask the sender for a new link, or write your own.
+    </p>
+    <a href="../index.html"
+       class="mt-8 inline-block rounded-full bg-pink-600 px-8 py-3 text-lg font-bold text-white transition-colors hover:bg-pink-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pink-800">
+      Make a confession
+    </a>
+  </main>
+
+  <svg width="0" height="0" class="absolute" aria-hidden="true">
+    <defs>
+      <radialGradient id="hf" cx="35%" cy="28%" r="80%">
+        <stop offset="0" stop-color="#ffe0ec"/>
+        <stop offset="0.3" stop-color="#ff7fb0"/>
+        <stop offset="0.72" stop-color="#ee3070"/>
+        <stop offset="1" stop-color="#b3144c"/>
+      </radialGradient>
+      <linearGradient id="hs" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#d11d62"/>
+        <stop offset="1" stop-color="#8a0e3a"/>
+      </linearGradient>
+      <symbol id="heart" viewBox="-118 -108 236 210">
+        <path d="M0,-62 C-8,-85 -30,-98 -55,-98 C-88,-98 -108,-72 -108,-42 C-108,-5 -70,28 -35,55 C-20,66 -12,72 0,72 C12,72 20,66 35,55 C70,28 108,-5 108,-42 C108,-72 88,-98 55,-98 C30,-98 8,-85 0,-62 Z"
+              transform="translate(0 13)" fill="url(#hs)" stroke="url(#hs)" stroke-width="6" stroke-linejoin="round"/>
+        <path d="M0,-62 C-8,-85 -30,-98 -55,-98 C-88,-98 -108,-72 -108,-42 C-108,-5 -70,28 -35,55 C-20,66 -12,72 0,72 C12,72 20,66 35,55 C70,28 108,-5 108,-42 C108,-72 88,-98 55,-98 C30,-98 8,-85 0,-62 Z"
+              fill="url(#hf)" stroke="url(#hf)" stroke-width="6" stroke-linejoin="round"/>
+        <ellipse cx="-66" cy="-62" rx="26" ry="14" transform="rotate(-35 -66 -62)" fill="#fff" fill-opacity="0.6"/>
+        <circle cx="-34" cy="-82" r="5" fill="#fff" fill-opacity="0.7"/>
+        <path d="M72,12 C88,-6 96,-26 94,-46" fill="none" stroke="#fff" stroke-opacity="0.35" stroke-width="6" stroke-linecap="round"/>
+      </symbol>
+    </defs>
+  </svg>
+</body>
+</html>
